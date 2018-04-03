@@ -1,9 +1,12 @@
+package main.scala
+
 import org.jsoup.Jsoup // Biblioteka do parsowania strony
 import java.io.File
 import java.io.PrintWriter
 import play.api.libs.json._ // Biblioteka do parsowania JSONa
 
 import scala.io.Source
+import scala.io.Codec
 import com.typesafe.config.ConfigFactory // Typesafe config
 
 /**
@@ -12,7 +15,6 @@ import com.typesafe.config.ConfigFactory // Typesafe config
   */
 object Scraper {
   //require(args.length>1)
-
   /**
     * Trzy klas przypadków definujące specuficzne wyjątki jakie mogą zajść
     *
@@ -86,6 +88,7 @@ object Scraper {
     * @return             Zawartość strong w formacie Document z biblioteki JSoup
     */
   def getUrlContenct(site_number: Int): org.jsoup.nodes.Document = {
+    implicit val codec = Codec("UTF-8")
     try {
       Jsoup
         .parse(

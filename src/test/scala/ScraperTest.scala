@@ -1,3 +1,5 @@
+
+package main.scala
 import org.scalatest.FunSuite
 import Scraper.ZeroNumberException
 
