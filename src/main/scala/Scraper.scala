@@ -33,7 +33,7 @@ object Scraper {
   def saveResultToFile(result: JsValue): Unit = {
     val config = ConfigFactory.load()
     val file_destination =
-      config.getString("BashOrgScraper.project.destinaton_filename") // plik docelowy pobierany z application.conf
+      config.getString("BashOrgScraper.project.destination_filename") // plik docelowy pobierany z application.conf
     try {
       val writer = new PrintWriter(new File(file_destination))
       writer.write(Json.prettyPrint(result)) // metoda prettyPrint "układa" zawartość JsArray do zapisu w pliku tekstowym
@@ -71,7 +71,8 @@ object Scraper {
     val arg_regex = """(\d+)""".r
     site_count match {
       case arg_regex(count) =>
-        if (count.toInt > 0) count.toInt // Podanie liczby zero traktowane jest jako błąd
+        if (count.toInt > 0)
+          count.toInt // Podanie liczby zero traktowane jest jako błąd
         else
           throw new ZeroNumberException("Pages number have to be larger than 0")
       case _ => throw new NumberFormatException("Positive number is needed")
@@ -105,7 +106,7 @@ object Scraper {
     */
   def crawlingMethod(n: Int): (Long, JsArray) = {
     (System.nanoTime(),
-     (1 to n)   // mapowanie po zbiorze kolejnych liczb całkowitych reprezentujących numery stron
+     (1 to n) // mapowanie po zbiorze kolejnych liczb całkowitych reprezentujących numery stron
        .map(site_number => {
          getUrlContenct(site_number)
            .getElementById("content") // algorytm zakłada niezmienność w strukturze strony
@@ -128,7 +129,7 @@ object Scraper {
              }
            })
        })
-       .reduceLeft(_ ++ _)) // połączenie pobranych JsArray w jedno
+       .reduceLeft(_ ++ _)) // połączenie pobranych JsArray w jedno JsArray
   }
 
   /**
@@ -137,8 +138,8 @@ object Scraper {
   def main(args: Array[String]): Unit = {
     if (args.length > 0) {
       val (start_time, json_records) = crawlingMethod(getSiteCount(args(0))) // Scrapinng
-      saveResultToFile(json_records)                                         // Zapis do pliku
-      statisticsPrinter(getSiteCount(args(0)),                               // Wypisanie statystyk
+      saveResultToFile(json_records) // Zapis do pliku
+      statisticsPrinter(getSiteCount(args(0)), // Wypisanie statystyk
                         json_records.value.size,
                         System.nanoTime() - start_time)
     } else throw new IllegalArgumentException("Number of pages is needed")
