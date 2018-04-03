@@ -1,4 +1,4 @@
-# Bash_org_pl_scraper
+﻿# Bash_org_pl_scraper
 
 Scraper pobierający wpisy z serwisu bash.org.pl. Scraper pobiera N najnowszych wpisów i parsuje je do foramtu JSON (JSON Array):
 ```
@@ -42,6 +42,16 @@ Output serwowany jest do pliku, który konfigurowany jest z pliku application.co
 7. Zapisanie uzyskanego wyniku do pliku o nazwie i ścieżce pobranej z application.conf.
 8. Wyświetlenie prostych statystyk do konsoli.
 9. Zakończenie działania aplikacji.
+
+## Instrukcja uruchomienia
+
+Aplikacja była uruchamiana za pomocą narzędzia Intellij IDEA, jednakże możliwe jest również uruchomeinie za pomocą sbt z poziomu konsoli:
+
+```
+sbt "run n"
+```
+
+n - liczba stron do pozyskania
 
 ## Uwagi
 
