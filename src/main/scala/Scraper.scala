@@ -20,11 +20,9 @@ object Scraper {
     *
     * @param message  Wiadomość opsiująca wyjątek
     */
-  final case class ZeroNumberException(message: String)
-      extends Exception(message)
-  final case class IOException(message: String) extends Exception(message)
-  final case class ConnectionException(message: String)
-      extends Exception(message)
+  final case class ZeroNumberException(message: String) extends Exception(message)
+  final case class IOException(message: String)         extends Exception(message)
+  final case class ConnectionException(message: String) extends Exception(message)
 
   /**
     * Metoda zapisująca wynik do pliku
@@ -55,10 +53,8 @@ object Scraper {
   def statisticsPrinter(n: Int, records_count: Int, time_diff: Long): Unit = {
     println("Statistics: ")
     println("Number of Records: " + records_count)
-    println(
-      "Average time of getting record: " + (time_diff / 1000000000.0 / records_count) + " sec")
-    println(
-      "Average time of getting page: " + (time_diff / 1000000000.0 / n) + " sec")
+    println("Average time of getting record: " + (time_diff / 1000000000.0 / records_count) + " sec")
+    println("Average time of getting page: " + (time_diff / 1000000000.0 / n) + " sec")
   }
 
   /**
