@@ -1,20 +1,14 @@
-package main.scala
+package com.skrzypek01.bashOrgScraper.crawler.logic
 
-import org.jsoup.Jsoup // Biblioteka do parsowania strony
-import java.io.File
-import java.io.PrintWriter
-import play.api.libs.json._ // Biblioteka do parsowania JSONa
+import org.jsoup.Jsoup
+import java.io.{File, PrintWriter}
 
-import scala.io.Source
-import scala.io.Codec
-import com.typesafe.config.ConfigFactory // Typesafe config
+import com.typesafe.config.ConfigFactory
+import play.api.libs.json.{JsArray, JsValue, Json}
 
-/**
-  * Główny obiekt Scrapera
-  * Start aplikacji z metody main
-  */
-object Scraper {
-  //require(args.length>1)
+import scala.io.{Codec, Source}
+
+class Worker {
   /**
     * Trzy klas przypadków definujące specuficzne wyjątki jakie mogą zajść
     *
@@ -105,30 +99,30 @@ object Scraper {
     */
   def crawlingMethod(n: Int): (Long, JsArray) = {
     (System.nanoTime(),
-     (1 to n) // mapowanie po zbiorze kolejnych liczb całkowitych reprezentujących numery stron
-       .map(site_number => {
-         getUrlContenct(site_number)
-           .getElementById("content") // algorytm zakłada niezmienność w strukturze strony
-           .getElementsByClass("q post")
-           .toArray
-           .map(_.asInstanceOf[org.jsoup.nodes.Element])
-           .foldLeft(Json.arr())((arr, element) => { // gromadzenie zawartości stron za pomocą rekurencji
-             arr :+ { // aktualizacja wyników tablicy o nowo spasowane elementy
-               Json.obj(
-                 "id" -> element.id.drop(1).toLong,
-                 "points" -> element
-                   .getElementsByClass("bar")
-                   .select("span.points")
-                   .text()
-                   .toLong,
-                 "content" -> element
-                   .getElementsByClass("quote post-content post-body")
-                   .text()
-               )
-             }
-           })
-       })
-       .reduceLeft(_ ++ _)) // połączenie pobranych JsArray w jedno JsArray
+      (1 to n) // mapowanie po zbiorze kolejnych liczb całkowitych reprezentujących numery stron
+        .map(site_number => {
+        getUrlContenct(site_number)
+          .getElementById("content") // algorytm zakłada niezmienność w strukturze strony
+          .getElementsByClass("q post")
+          .toArray
+          .map(_.asInstanceOf[org.jsoup.nodes.Element])
+          .foldLeft(Json.arr())((arr, element) => { // gromadzenie zawartości stron za pomocą rekurencji
+            arr :+ { // aktualizacja wyników tablicy o nowo spasowane elementy
+              Json.obj(
+                "id" -> element.id.drop(1).toLong,
+                "points" -> element
+                  .getElementsByClass("bar")
+                  .select("span.points")
+                  .text()
+                  .toLong,
+                "content" -> element
+                  .getElementsByClass("quote post-content post-body")
+                  .text()
+              )
+            }
+          })
+      })
+        .reduceLeft(_ ++ _)) // połączenie pobranych JsArray w jedno JsArray
   }
 
   /**
@@ -139,8 +133,8 @@ object Scraper {
       val (start_time, json_records) = crawlingMethod(getSiteCount(args(0))) // Scrapinng
       saveResultToFile(json_records) // Zapis do pliku
       statisticsPrinter(getSiteCount(args(0)), // Wypisanie statystyk
-                        json_records.value.size,
-                        System.nanoTime() - start_time)
+        json_records.value.size,
+        System.nanoTime() - start_time)
     } else throw new IllegalArgumentException("Number of pages is needed")
   }
 

@@ -7,5 +7,8 @@ abstract class CompositionRoot private (val config: Config) {}
 
 object CompositionRoot {
 
-  def init(config: Config)(implicit ec: ExecutionContext): CompositionRoot = new CompositionRoot(config) {}
+  def init(config: Config)(implicit ec: ExecutionContext): CompositionRoot = new CompositionRoot(config) {
+
+
+  }
 }

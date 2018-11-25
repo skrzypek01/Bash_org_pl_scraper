@@ -16,4 +16,6 @@ object Boot extends App with LazyLogging {
 
   lazy val compositionRoot = CompositionRoot.init(config)
 
+
+
 }
