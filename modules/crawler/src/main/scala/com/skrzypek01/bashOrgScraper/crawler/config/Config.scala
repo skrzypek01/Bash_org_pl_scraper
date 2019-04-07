@@ -1,9 +1,7 @@
 package com.skrzypek01.bashOrgScraper.crawler.config
 
-case class Config(conf: String)
+import com.typesafe.config.{Config => TypesafeConfig}
 
-object Config {
+final case class FilePathConfig(filePath: String)
 
-  def fromTypesafeConfig(config: com.typesafe.config.Config): Config = ???
-
-}
+case class Config(filePathConfig: FilePathConfig)

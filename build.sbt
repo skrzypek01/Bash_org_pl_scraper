@@ -36,6 +36,9 @@ val commonSettings = Seq(
       ++ Dependencies.playJson
       ++ Dependencies.slickLibs
       ++ Dependencies.jsoupLib
+      ++ Dependencies.pureConfig
+      ++ Dependencies.sttp
+      ++ Dependencies.monix
 )
 
 lazy val api = Project(id = "bashOrgSraper-api", base = file("modules/api"))
@@ -56,7 +59,8 @@ lazy val crawler = Project(id = "bashOrgScraper-crawler", base = file("modules/c
   .settings(
     name := "bashOrgScraper-crawler",
     version := projectVersion,
-    parallelExecution in Test := false
+    parallelExecution in Test := false,
+    libraryDependencies ++= Dependencies.sttp
   )
   .dependsOn(common)
 
