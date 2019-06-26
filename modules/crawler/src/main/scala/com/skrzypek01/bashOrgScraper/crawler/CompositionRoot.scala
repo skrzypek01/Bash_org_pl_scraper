@@ -20,5 +20,7 @@ object CompositionRoot {
     implicit val sttpBackend: SttpBackend[Task, Observable[ByteBuffer]] = AsyncHttpClientMonixBackend()
 
     val connectionService = new ConnectionServiceImpl()
+    val parssingService = new ParssingServiceImpl()
+
   }
 }
